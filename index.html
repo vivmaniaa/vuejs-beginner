@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>vue js project</title>
+
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<style>
+		[v-cloak]{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div id="app">
+		<h1>Count: {{count}}</h1>	
+		<!-- <input type="text" v-model="message" >	 -->
+		<button class="btn btn-primary" v-on:click="countUp">count up</button>
+		<button class="btn btn-primary" v-on:click="countDown">count Down</button>
+		
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript" src="https://unpkg.com/vue@2.5.9/dist/vue.js"></script>
+
+<script >
+	var app = new Vue({
+		el: '#app',
+		data: {
+			message: "new message coming from vue!",
+			count: 0
+		},
+		methods: {
+			countUp: function(){
+				this.count += 1
+			},
+			countDown: function(){
+				this.count -= 1
+			}
+		}
+		
+			
+	})
+</script>
+</body>
+</html>
