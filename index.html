@@ -4,6 +4,7 @@
 	<title>vue js project</title>
 
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<style>
 		[v-cloak]{
@@ -14,11 +15,14 @@
 <body>
 <div class="container">
 	<div id="app">
-		<h1 class="text-center">hello {{fullName}}</h1>
-		<p>Fist Name: {{firstName}}</p>
-		<p>Last Name: {{lastName}}</p>
-
-		<label>First Name: </label><input v-model="firstName" type="text" class="form-control" name="firstName"><label>Last Name: </label><input v-model="lastName" type="text" class="form-control" name="lastName">
+		<h1 class="text-center">You are a <strong>{{level}}</strong></h1>
+		<hr>
+		<h3 class="text-center">Current Xp {{xp}}</h3>
+		<div class="text-center">
+			<button @click="IncreaseXp" class="btn btn-success">Increase Xp <i class="fa fa-plus-circle" aria-hidden="true"></i>
+</button>
+			<button @click="DecreaseXp" class="btn btn-success">Decrease Xp <i class="fa fa-minus-circle" aria-hidden="true"></i></button>	
+		</div>
 	</div>
 </div>
 
@@ -27,12 +31,28 @@
 	var app = new Vue({
 		el: '#app',
 		data: {
-			firstName: "",
-			lastName: ""
+			xp: 10
+		},
+		methods: {
+			IncreaseXp: function(){
+				this.xp += 10
+			},
+			DecreaseXp: function(){
+				this.xp -= 10;
+				if(this.xp <0){
+					this.xp = 0
+				}
+			}
 		},
 		computed: {
-			fullName: function(){
-				return this.firstName + " " + this.lastName
+			level: function(){
+				if(this.xp >=200){
+					return "Pro"
+				} else if(this.xp >=100){
+					return "Intermediate"
+				} else if(this.xp >= 0){
+					return "Beginner"
+				}
 			}
 		}
 		
