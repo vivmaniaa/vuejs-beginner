@@ -14,11 +14,11 @@
 <body>
 <div class="container">
 	<div id="app">
-		<h1 v-cloak>{{message}}</h1>	
-		<p>Visit:<a v-cloak :href="url"> {{cleanUrl}}</a></p>
-		<input type="text" v-model="url">
-		<button class="btn btn-primary" @click="humanizeUrl">Humanize Me!</button>
-		
+		<h1 class="text-center">hello {{fullName}}</h1>
+		<p>Fist Name: {{firstName}}</p>
+		<p>Last Name: {{lastName}}</p>
+
+		<label>First Name: </label><input v-model="firstName" type="text" class="form-control" name="firstName"><label>Last Name: </label><input v-model="lastName" type="text" class="form-control" name="lastName">
 	</div>
 </div>
 
@@ -27,13 +27,12 @@
 	var app = new Vue({
 		el: '#app',
 		data: {
-			message: "new message coming from vue!",
-			url: "",
-			cleanUrl: ""
+			firstName: "",
+			lastName: ""
 		},
-		methods: {
-			humanizeUrl: function(){
-				this.cleanUrl = this.url.replace(/^https?:\/\//, "").replace(/\/$/,'')
+		computed: {
+			fullName: function(){
+				return this.firstName + " " + this.lastName
 			}
 		}
 		
