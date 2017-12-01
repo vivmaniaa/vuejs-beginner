@@ -14,32 +14,26 @@
 <body>
 <div class="container">
 	<div id="app">
-		<h1>Count: {{count}}</h1>	
-		<!-- <input type="text" v-model="message" >	 -->
-		<button class="btn btn-primary" v-on:click="countUp">count up</button>
-		<button class="btn btn-primary" v-on:click="countDown">count Down</button>
+		<h1 v-cloak>{{message}}</h1>	
+		<p>Visit:<a v-cloak :href="url"> {{cleanUrl}}</a></p>
+		<input type="text" v-model="url">
+		<button class="btn btn-primary" @click="humanizeUrl">Humanize Me!</button>
 		
 	</div>
 </div>
 
-
-
-
 <script type="text/javascript" src="https://unpkg.com/vue@2.5.9/dist/vue.js"></script>
-
 <script >
 	var app = new Vue({
 		el: '#app',
 		data: {
 			message: "new message coming from vue!",
-			count: 0
+			url: "",
+			cleanUrl: ""
 		},
 		methods: {
-			countUp: function(){
-				this.count += 1
-			},
-			countDown: function(){
-				this.count -= 1
+			humanizeUrl: function(){
+				this.cleanUrl = this.url.replace(/^https?:\/\//, "").replace(/\/$/,'')
 			}
 		}
 		
