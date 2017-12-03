@@ -9,50 +9,97 @@
 		[v-cloak]{
 			display: none;
 		}
+		body{
+			background-color: skyblue;
+			padding-top: 20px;
+		}
+		.dynamic-add{
+			width: 100%;
+			height: 40px;	
+		}
+		#app{
+			background-color: red;
+		}
+		.outer-box{
+			    background-color: rgba(255, 0, 0, 0.33);
+			padding: 10px;
+		}
 	</style>
 </head>
 <body>
 <div class="container">
 	<div id="app">
-		<h1 class="text-center">hello {{fullName}}</h1>
-
-		<p>Fist Name: {{firstName}}</p>
-		<p>Last Name: {{lastName}}</p>	
-
-		<div class="row">
-			<div class="col-md-12"><label>Full Name: </label><input type="text" class="form-control" name="" v-model="fullName"></div>
-			<div class="col-md-6"><label>First Name: </label><input v-model="firstName" type="text" class="form-control" name="firstName"></div>
-			<div class="col-md-6"><label>Last Name: </label><input v-model="lastName" type="text" class="form-control" name="lastName"></div>	
+		<div class="col-md-8 col-md-offset-2">
+			<div class="text-center outer-box">
+				<h1>Fill out this form</h1>
+				<div class="col-md-6">
+					<label>Starting Zipcode</label>
+					<input type="text" name="" class="form-control" v-model="startingZip">			
+					<div class="dynamic-add text-left pl-xl">{{startingCity}}</div>
+				</div>
+				<div class="col-md-6">
+					<label>Ending Zipcode</label>
+					<input type="text" name="" class="form-control" v-model="endingZip">			
+					<div class="dynamic-add text-left ">{{endingCity}}</div>
+				</div>
+				<button class="btn btn-primary form-control">Submit</button>
+			</div>			
 		</div>
-	
-
-		
+				
 	</div>
 </div>
 
 <script type="text/javascript" src="https://unpkg.com/vue@2.5.9/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 <script >
 	var app = new Vue({
 		el: '#app',
 		data: {
-			firstName: "",
-			lastName: ""
+			//data items
+			startingZip: '',
+			startingCity: '',
+			endingZip: '',
+			endingCity: ''
 		},
-		computed: {
-			fullName: { 
-					//Getter function
-					get: function(){
-						return this.firstName + " " + this.lastName
-					},
-					//Setter function
-
-					set: function(value){
-						var name = value.split(' ')
-						this.firstName = name[0]
-						this.lastName = name[name.length - 1]
-					}
-
+		watch: {
+			//watch methods
+			startingZip: function() {
+				this.startingCity = ''
+				if(this.startingZip.length == 5) {
+					this.lookUpStartingZip()
 				}
+			},
+			endingZip: function() {
+				this.endingCity = ''
+				if(this.endingZip.length == 5) {
+					this.lookUpEndingZip()
+				}
+			}
+		},
+		methods: {
+			lookUpStartingZip: _.debounce(function(){
+				var app = this
+				app.startingCity = "Searching..."
+				axios.get('http://ziptasticapi.com/'+ app.startingZip)
+				.then(function(response){
+					app.startingCity = response.data.city+", "+response.data.state
+				})
+				.catch(function(error){
+					app.startingCity = "Invalid Zipcode "
+				})
+			}, 500),
+			lookUpEndingZip: _.debounce(function(){
+				var app = this
+				app.endingCity = "Searching..."
+				axios.get('http://ziptasticapi.com/'+ app.endingZip)
+				.then(function(response){
+					app.endingCity = response.data.city+", "+response.data.state
+				})
+				.catch(function(error){
+					app.endingCity = "Invalid Zipcode "
+				})
+			}, 500)
 		}
 		
 			
